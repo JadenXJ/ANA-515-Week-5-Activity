@@ -1,0 +1,49 @@
+---
+title: "ANA 515 Visualizations Acitivity"
+author: "Jaden Jefferson"
+date: "4/15/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+#install.packages("tidyverse")
+#install.packages("readr")
+#install.packages("dplyr")
+```
+
+```{r include=FALSE}
+library(tidyverse)
+library(readr)
+library(dplyr)
+
+url<- "https://covid.ourworldindata.org/data/owid-covid-data.csv"
+covid<-read_csv(url)
+```
+
+First, I want to know the relationship between the development of a country and the total number of deaths. This will be fractured by states. When looking at the graphics it seems that those with higher human development indexes actually experienced more deaths. This can be due to a variety of factors such as being able to tell who was positive for covid in the first place, different exposure levels, amount of people in the countries, etc.
+
+```{r echo=FALSE}
+ggplot(data=covid) + 
+  geom_point(mapping = aes (x =human_development_index, y=total_deaths_per_million)) +
+  geom_smooth(mapping = aes (x =human_development_index, y=total_deaths_per_million)) +
+  facet_wrap(~continent)
+```
+
+Then, what is the relationship between new vaccinations and new deaths.Looking at the graphic it does seem like as new vaccinations were administered the amount of deaths fail a lot. However, this can be due to repsonses by the government and how they handled the situation in different countries. 
+
+``` {r echo=FALSE}
+ggplot(data=covid) + 
+  geom_point(mapping = aes (x =new_vaccinations_smoothed_per_million, y=new_deaths_smoothed_per_million)) +
+  geom_smooth(mapping = aes (x =new_vaccinations_smoothed_per_million, y=new_deaths_smoothed_per_million)) +
+  facet_wrap(~continent)
+```
+
+Under that same logic,does new vaccinations lead to less cases.In most cases it could be assumed yes. The per million is causing problems with the graphic. It is intersting that Oceania has their thing spike as vaccinations happened and that could be drilled down into for something interesting.
+
+```{r echo=FALSE}
+ggplot(data=covid) + 
+  geom_point(mapping = aes (x =new_vaccinations_smoothed_per_million, y=new_cases_per_million)) +
+  geom_smooth(mapping = aes (x =new_vaccinations_smoothed_per_million, y=new_cases_per_million)) +
+  facet_wrap(~continent)
+```
+
